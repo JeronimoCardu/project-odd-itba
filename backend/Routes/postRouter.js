@@ -2,6 +2,7 @@ const express = require("express");
 const fs = require("fs/promises");
 const postRouter = express.Router();
 const path = require("path");
+const crypto = require("crypto");
 
 const pathFile = path.join(__dirname, "../posts.json");
 
@@ -24,7 +25,12 @@ postRouter.post("/", async (req, res) => {
   const posts = await readFile(pathFile);
 
   const newPost = req.body;
-  posts.push(newPost);
+  posts.push({
+    id: crypto.randomUUID(),
+    createdAt: new Date().toISOString(),
+    ...newPost,
+    comments: [],
+  });
 
   await writeFile(pathFile, posts);
   res.json(newPost);
@@ -37,9 +43,12 @@ postRouter.post("/:id/comments", async (req, res) => {
   const newComment = req.body;
 
   const updatedPosts = posts.map((post) => {
-    if (post.id === Number(id)) {
-      if (!post.comments) post.comments = [];
-      post.comments.push(newComment);
+    if (post.id === id) {
+      post.comments.push({
+        id: crypto.randomUUID(),
+        createdAt: new Date().toISOString(),
+        ...newComment,
+      });
     }
     return post;
   });
@@ -48,4 +57,4 @@ postRouter.post("/:id/comments", async (req, res) => {
   res.json(newComment);
 });
 
-module.exports = postRouter ;
+module.exports = postRouter;

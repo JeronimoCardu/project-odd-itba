@@ -1,14 +1,14 @@
 const express = require("express");
 const cors = require("cors");
-const postRouter = require('./Routes/postRouter')
+const postRouter = require("./Routes/postRouter");
 const app = express();
 
 const PORT = 4000;
 
-app.use(cors())
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 
-app.use('/api/posts', postRouter)
+app.use("/api/posts", postRouter);
 
 app.get("/", (req, res) => {
   res.end("Bienvenido al proyecto de los impares");

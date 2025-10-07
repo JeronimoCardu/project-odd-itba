@@ -1,14 +1,1 @@
-[
-  {
-    "nombre": "jeronimo"
-  },
-  {
-    "id": 2,
-    "nombre": "jeronimo",
-    "comments": [
-      {
-        "content": "jajaja yeah"
-      }
-    ]
-  }
-]
+[]
