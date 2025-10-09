@@ -6,15 +6,15 @@ const crypto = require("crypto");
 
 const pathFile = path.join(__dirname, "../posts.json");
 
+// postRouter.use(express.json());
+
 const readFile = async (file) => {
   const data = await fs.readFile(file, "utf-8");
-  const posts = await JSON.parse(data);
-  return posts;
+  return JSON.parse(data);
 };
 
 const writeFile = async (file, newValue) => {
   await fs.writeFile(file, JSON.stringify(newValue, null, 2));
-  return;
 };
 
 postRouter.get("/", async (req, res) => {
@@ -23,17 +23,22 @@ postRouter.get("/", async (req, res) => {
 
 postRouter.post("/", async (req, res) => {
   const posts = await readFile(pathFile);
-
   const newPost = req.body;
-  posts.push({
+
+  if (!newPost.title || !newPost.content || !newPost.author) {
+    return res.status(400).json("Requied all fields");
+  }
+
+  const postToSave = {
     id: crypto.randomUUID(),
     createdAt: new Date().toISOString(),
     ...newPost,
     comments: [],
-  });
+  };
+  posts.push(postToSave);
 
   await writeFile(pathFile, posts);
-  res.json(newPost);
+  res.json(postToSave);
 });
 
 postRouter.post("/:id/comments", async (req, res) => {

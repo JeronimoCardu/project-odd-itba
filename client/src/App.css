@@ -1,0 +1,43 @@
+#root,
+body,
+html {
+  width: 100%;
+  height: 100%;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header h1 {
+  text-align: center;
+  margin: 0;
+  padding: 1rem 0;
+  border-bottom: 1px solid black;
+}
+
+main{
+  display: flex;
+}
+main aside {
+  width: 20%;
+  padding: 0 1.5rem;
+  border-right: 1px solid black;
+  min-height: 100vh;
+  h2{
+    margin: 0;
+    padding: 1rem 0;
+  }
+}
+main aside form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  input {
+    outline: none;
+    border: 1px solid gray;
+    height: 1.4rem;
+    border-radius: 0.5rem;
+    padding: 0 0.5rem;
+  }
+}

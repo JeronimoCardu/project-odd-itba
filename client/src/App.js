@@ -1,11 +1,15 @@
-import './App.css';
+import "./App.css";
+import CreatorPost from "./sections/CreatorPost";
 
-function App() {
+export default function App() {
   return (
-    <div >
-      
-    </div>
+    <>
+      <header>
+        <h1>My Blog</h1>
+      </header>
+      <main>
+        <CreatorPost />
+      </main>
+    </>
   );
 }
-
-export default App;
