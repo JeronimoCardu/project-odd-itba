@@ -1,21 +1,31 @@
 import { useState } from "react";
 
 export default function CreatorPost() {
-  const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [content, setContent] = useState("");
-  const [send, setSend] = useState(false);
+  const [newPost, setNewPost] = useState({
+    title: "",
+    content: "",
+    author: "",
+  });
+  const [isIncomplete, setIsIncomplete] = useState(false);
 
   async function createPost(newPost) {
     try {
-      await fetch("http://localhost:4000/api/posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newPost),
-      });
-    } catch (err) {
-      console.log(err);
-    }
+      if (newPost.title && newPost.author && newPost.content) {
+        await fetch("http://localhost:4000/api/posts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newPost),
+        });
+        setIsIncomplete(false);
+        setNewPost({
+          title: "",
+          content: "",
+          author: "",
+        });
+      } else {
+        setIsIncomplete(true);
+      }
+    } catch (err) {}
   }
 
   return (
@@ -25,31 +35,40 @@ export default function CreatorPost() {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          setSend(true);
-          createPost({ title, content, author });
+          createPost(newPost);
         }}
       >
         <input
-          onChange={(e) => setAuthor(e.currentTarget.value)}
+          value={newPost.author}
+          onChange={(e) =>
+            setNewPost({ ...newPost, author: e.currentTarget.value })
+          }
           type="text"
           placeholder="Author"
         />
         <input
-          onChange={(e) => setTitle(e.currentTarget.value)}
+          value={newPost.title}
+          onChange={(e) =>
+            setNewPost({ ...newPost, title: e.currentTarget.value })
+          }
           type="text"
           placeholder="Title"
         />
-        <input
-          onChange={(e) => setContent(e.currentTarget.value)}
+        <textarea
+          value={newPost.content}
+          onChange={(e) =>
+            setNewPost({ ...newPost, content: e.currentTarget.value })
+          }
           type="text"
           placeholder="Content"
         />
         <button type="submit">Create</button>
-        {(!title || !content || !author) && send && (
-          <p style={{ color: "red", textAlign: "center", margin: "0  " }}>
-            Fileds are empty
-          </p>
-        )}
+        {(!newPost.title || !newPost.content || !newPost.author) &&
+          isIncomplete && (
+            <p style={{ color: "red", textAlign: "center", margin: "0  " }}>
+              Requied all fields
+            </p>
+          )}
       </form>
     </aside>
   );

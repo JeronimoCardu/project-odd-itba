@@ -31,7 +31,7 @@ postRouter.post("/", async (req, res) => {
 
   const postToSave = {
     id: crypto.randomUUID(),
-    createdAt: new Date().toISOString(),
+    createdAt: new Date().toLocaleDateString(),
     ...newPost,
     comments: [],
   };
@@ -51,7 +51,7 @@ postRouter.post("/:id/comments", async (req, res) => {
     if (post.id === id) {
       post.comments.push({
         id: crypto.randomUUID(),
-        createdAt: new Date().toISOString(),
+        createdAt: new Date().toLocaleDateString(),
         ...newComment,
       });
     }
